@@ -25,13 +25,6 @@ It allows users to register, place bids, and view the winner after the auction e
 * JavaScript
 
 ---
-
-## 📷 Screenshot
-
-(Add your project screenshot here)
-
----
-
 ## 📁 Project Structure
 
 ```
@@ -41,8 +34,6 @@ project/
 │── script.js (if separate)
 │── images/
 ```
-
----
 
 ## 💡 Future Improvements
 
