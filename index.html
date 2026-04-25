@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online Auction System</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    padding:20px;
+}
+
+header{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+h1{
+    color:#2c3e50;
+}
+
+.card{
+    background:#fff;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:8px;
+    box-shadow:0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card h2{
+    margin-bottom:15px;
+    color:#34495e;
+}
+
+form{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+input{
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+button{
+    padding:10px;
+    background:#3498db;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#207ebc;
+}
+
+.product{
+    display:flex;
+    gap:20px;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+.product img{
+    width:100px;
+    border-radius:6px;
+}
+
+.timer{
+    font-size:18px;
+    color:#e74c3c;
+    font-weight:bold;
+}
+
+.winner{
+    background:#e8f8f5;
+    border-left:6px solid #27ae60;
+    display:none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Online Auction System</h1>
+</header>
+
+<!-- Registration -->
+<section class="card">
+    <h2>User Registration</h2>
+    <form onsubmit="return false;">
+        <input type="text" id="username" placeholder="Enter Your Name" required>
+        <input type="text" id="Email id" placeholder="Enter Email id" required>
+
+        <button onclick="registerUser()">Register</button>
+    </form>
+    <p id="welcome"></p>
+</section>
+
+<!-- Product -->
+<section class="card">
+    <h2>Product</h2>
+    <div class="product">
+        <img src="https://www.google.com/imgres?q=apple%20watch%20image%20in%20jpg&imgurl=https%3A%2F%2Fwww.apple.com%2Fnewsroom%2Fimages%2Fproduct%2Fwatch%2Flifestyle%2FApple_announces-watch-se_09152020_big.jpg.large.jpg&imgrefurl=https%3A%2F%2Fwww.apple.com%2Fin%2Fnewsroom%2F2020%2F09%2Fapple-watch-se-the-ultimate-combination-of-design-function-and-value%2F&docid=VcPxov2p89arHM&tbnid=jJMMGJdC50nxgM&vet=12ahUKEwj43_Kmt4iUAxUGe_UHHZwfJfIQnPAOegQIGhAB..i&w=980&h=843&hcb=2&ved=2ahUKEwj43_Kmt4iUAxUGe_UHHZwfJfIQnPAOegQIGhAB">
+        <div>
+            <h3>Apple Watch</h3>
+            <p>Starting Bid: $500</p>
+            <p>Highest Bid: $<span id="highestBid">500</span></p>
+        </div>
+    </div>
+</section>
+
+<!-- Bidding -->
+<section class="card">
+    <h2>Live Bidding</h2>
+    <div class="timer">
+        Time Left: <span id="time">60</span> sec
+    </div>
+
+    <form onsubmit="return false;">
+        <input type="number" id="bidAmount" placeholder="Enter Your Bid">
+        <button onclick="placeBid()">Place Bid</button>
+    </form>
+</section>
+
+<!-- Winner -->
+<section class="card winner" id="winnerBox">
+    <h2>Winner</h2>
+    <p id="winnerName"></p>
+    <p id="winnerBid"></p>
+</section>
+
+<script>
+let highestBid = 500;
+let highestBidder = "No one";
+let currentUser = "";
+let timeLeft = 60;
+
+// Register
+function registerUser(){
+    const name = document.getElementById("username").value;
+    if(name === ""){
+        alert("Enter name!");
+        return;
+    }
+    currentUser = name;
+    document.getElementById("welcome").innerText = "Welcome, " + name;
+}
+
+// Place Bid
+function placeBid(){
+    const bid = parseInt(document.getElementById("bidAmount").value);
+
+    if(currentUser === ""){
+        alert("Please register first!");
+        return;
+    }
+
+    if(bid > highestBid){
+        highestBid = bid;
+        highestBidder = currentUser;
+        document.getElementById("highestBid").innerText = highestBid;
+    } else {
+        alert("Bid must be higher than current!");
+    }
+}
+
+// Timer
+const timer = setInterval(() => {
+    timeLeft--;
+    document.getElementById("time").innerText = timeLeft;
+
+    if(timeLeft <= 0){
+        clearInterval(timer);
+        endAuction();
+    }
+}, 1000);
+
+// End Auction
+function endAuction(){
+    document.getElementById("winnerBox").style.display = "block";
+    document.getElementById("winnerName").innerText = "Winner: " + highestBidder;
+    document.getElementById("winnerBid").innerText = "Winning Bid: $" + highestBid;
+}
+</script>
+
+</body>
+</html>
